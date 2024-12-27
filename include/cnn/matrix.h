@@ -1,3 +1,5 @@
+#pragma once
+
 class Matrix {
 private:
     double** data;
@@ -23,4 +25,11 @@ public:
     //Utility
     void fill(double value);
     void print() const;
+
+    int get_rows() const { 
+        return rows; 
+    }
+    int get_cols() const { 
+        return cols; 
+    }
 };
