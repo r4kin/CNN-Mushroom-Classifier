@@ -1,5 +1,6 @@
 #pragma once
 #include "matrix.h"
+#include <stdexcept>
 
 class FullyConnected {
 private:
@@ -17,4 +18,8 @@ public:
     // Getters
     Matrix getWeights() const { return weights; }
     Matrix getBias() const { return bias; }
+    
+    // Setters
+    void setWeights(const Matrix& new_weights);
+    void setBias(const Matrix& new_bias);
 };

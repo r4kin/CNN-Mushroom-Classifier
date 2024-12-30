@@ -68,8 +68,8 @@ Matrix Matrix::multiply(const Matrix& other) const{
     return result;
 }
 
-Matrix Matrix::transpose() {
-    Matrix result(cols, rows); // swapped rows/cols
+Matrix Matrix::transpose() const {
+    Matrix result(cols, rows); 
 
     for(int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -98,4 +98,47 @@ void Matrix::print() const {
         
         std::cout << std::endl;
     }
+}
+
+Matrix& Matrix::operator=(const Matrix& other) {
+    if (this != &other) {
+        deallocate();
+        rows = other.rows;
+        cols = other.cols;
+        allocate();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                data[i][j] = other.data[i][j];
+            }
+        }
+    }
+    return *this;
+}
+
+Matrix Matrix::add(const Matrix& other) const {
+    if (rows != other.rows || cols != other.cols) {
+        throw std::runtime_error("Matrix Addition Error: Dimensions don't match");
+    }
+    
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result.set(i, j, data[i][j] + other.get(i, j));
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::subtract(const Matrix& other) const {
+    if (rows != other.rows || cols != other.cols) {
+        throw std::runtime_error("Matrix Subtraction Error: Dimensions don't match");
+    }
+    
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result.set(i, j, data[i][j] - other.get(i, j));
+        }
+    }
+    return result;
 }

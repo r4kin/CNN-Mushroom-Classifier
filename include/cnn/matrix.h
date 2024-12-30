@@ -20,12 +20,16 @@ public:
     double get(int i, int j) const;
     void set(int i, int j, double value);
     Matrix multiply(const Matrix& other) const;
-    Matrix transpose();
+    Matrix add(const Matrix& other) const;
+    Matrix subtract(const Matrix& other) const;
+    Matrix transpose() const;
 
     //Utility
     void fill(double value);
     void print() const;
 
+    // Getters/Setters
+    Matrix& operator=(const Matrix& other);
     int get_rows() const { 
         return rows; 
     }

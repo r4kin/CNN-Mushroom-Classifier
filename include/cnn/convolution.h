@@ -4,12 +4,14 @@
 class Convolution {
 private:
     Matrix kernel;
+    Matrix kernel_gradients; // Storage for gradients
+    double learning_rate;
     int stride;
     int padding;
     
 public:
     // Constructors
-    Convolution(int kernel_size, int stride=1, int padding=0);
+    Convolution(int kernel_size, double learning_rate=0.01, int stride=1, int padding=0);
     ~Convolution();
     
     // Matrix Operators
@@ -20,6 +22,10 @@ public:
     // Kernel Operators
     void setKernel(const Matrix& new_kernel);
     Matrix getKernel() const;
+
+    // Gradient Kernel Operators
+    void updateKernel(const Matrix& gradients);
+    Matrix getKernelGradients() const;
     
     // Activation Functions
     Matrix relu(const Matrix& input);

@@ -26,6 +26,11 @@ void FullyConnected::initializeWeights() {
 }
 
 Matrix FullyConnected::forward(const Matrix& input) {
+    // Input size validation
+    if (input.get_cols() != weights.get_rows()) {
+        throw std::runtime_error("Input dimensions don't match weights");
+    }
+
     // output = input * weights + bias
     Matrix output = input.multiply(weights);
     
@@ -37,4 +42,20 @@ Matrix FullyConnected::forward(const Matrix& input) {
     }
     
     return output;
+}
+
+void FullyConnected::setWeights(const Matrix& new_weights) {
+    if (new_weights.get_rows() != weights.get_rows() || 
+        new_weights.get_cols() != weights.get_cols()) {
+        throw std::runtime_error("New weights dimensions don't match");
+    }
+    weights = new_weights;
+}
+
+void FullyConnected::setBias(const Matrix& new_bias) {
+    if (new_bias.get_rows() != 1 || 
+        new_bias.get_cols() != bias.get_cols()) {
+        throw std::runtime_error("New bias dimensions don't match");
+    }
+    bias = new_bias;
 }

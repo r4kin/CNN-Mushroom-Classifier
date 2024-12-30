@@ -16,4 +16,8 @@ public:
     
     // Utility functions
     int calculateOutputDim(int input_dim) const;
+
+    // Getters
+    int getKernelSize() const { return kernel_size; }
+    int getStride() const { return stride; }
 };

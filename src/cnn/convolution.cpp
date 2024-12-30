@@ -2,9 +2,15 @@
 #include <iostream>
 #include <cassert>
 
-Convolution::Convolution(int kernel_size, int stride, int padding) 
-    : kernel(kernel_size, kernel_size), stride(stride), padding(padding) {
-    kernel.fill(1.0 / (kernel_size * kernel_size));  // Initialize with normalized values
+Convolution::Convolution(int kernel_size, double learning_rate, int stride, int padding) 
+    : kernel(kernel_size, kernel_size),
+      kernel_gradients(kernel_size, kernel_size),
+      learning_rate(learning_rate),
+      stride(stride),
+      padding(padding) 
+{
+    kernel.fill(1.0 / (kernel_size * kernel_size));
+    kernel_gradients.fill(0.0);
 }
 
 Convolution::~Convolution() {
@@ -61,4 +67,37 @@ Matrix Convolution::relu(const Matrix& input) {
         }
     }
     return result;
+}
+
+void Convolution::updateKernel(const Matrix& gradients) {
+    // Store the gradients
+    kernel_gradients = gradients;  // Add this line
+    
+    // Update kernel weights
+    for(int i = 0; i < kernel.get_rows(); i++) {
+        for(int j = 0; j < kernel.get_cols(); j++) {
+            double current = kernel.get(i, j);
+            kernel.set(i, j, current - learning_rate * gradients.get(i, j));
+        }
+    }
+}
+
+Matrix Convolution::getKernelGradients() const {
+    return kernel_gradients;
+}
+
+Matrix Convolution::getKernel() const {
+    return kernel;
+}
+
+void Convolution::setKernel(const Matrix& new_kernel) {
+    kernel = new_kernel;
+}
+
+int Convolution::getStride() const {
+    return stride;
+}
+
+int Convolution::getPadding() const {
+    return padding;
 }

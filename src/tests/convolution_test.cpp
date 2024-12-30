@@ -2,13 +2,37 @@
 #include <iostream>
 #include <cassert>
 
+// New test function for constructor and getters
+void testConstructorAndGetters() {
+    std::cout << "\nTesting Constructor and Getters:\n";
+    std::cout << "===========================\n";
+    
+    Convolution conv(3, 0.01, 1, 1);  // kernel_size=3, learning_rate=0.01, stride=1, padding=1
+    
+    // Test getters
+    std::cout << "Stride: " << conv.getStride() << " (expected: 1)" << std::endl;
+    std::cout << "Padding: " << conv.getPadding() << " (expected: 1)" << std::endl;
+    
+    // Test kernel getter and setter
+    Matrix original_kernel = conv.getKernel();
+    std::cout << "Original kernel:\n";
+    original_kernel.print();
+    
+    // Test kernel setter
+    Matrix new_kernel(3, 3);
+    new_kernel.fill(0.5);
+    conv.setKernel(new_kernel);
+    std::cout << "\nAfter setting new kernel:\n";
+    conv.printKernel();
+}
+
 void testConvolutionOperations() {
     std::cout << "\nTesting Convolution Operations:\n";
     std::cout << "===========================\n";
     
     // Test kernel initialization
     std::cout << "Testing Kernel (3x3):\n";
-    Convolution conv(3, 1, 1);  // kernel_size=3, stride=1, padding=1
+    Convolution conv(3, 0.01, 1, 1);  // Added learning_rate parameter
     conv.printKernel();
     
     // Test padding
@@ -36,7 +60,7 @@ void testConvolutionOperations() {
     // Test ReLU with comprehensive cases
     std::cout << "\nTesting ReLU Activation:\n";
     Matrix reluInput(3, 3);
-    reluInput.fill(0.0);  // Initialize all values
+    reluInput.fill(0.0);
     
     // Set test values to cover positive, negative, and zero cases
     reluInput.set(0, 0, -1.0);   // Negative
@@ -57,12 +81,38 @@ void testConvolutionOperations() {
     activated.print();
 }
 
+
+// New test function for gradient-related operations
+void testGradientOperations() {
+    std::cout << "\nTesting Gradient Operations:\n";
+    std::cout << "===========================\n";
+    
+    Convolution conv(2, 0.1);  // 2x2 kernel, learning_rate=0.1
+    
+    // Test kernel gradients
+    Matrix gradients(2, 2);
+    gradients.fill(0.5);
+    
+    std::cout << "Original kernel:\n";
+    conv.printKernel();
+    
+    conv.updateKernel(gradients);
+    std::cout << "\nKernel after gradient update:\n";
+    conv.printKernel();
+    
+    Matrix stored_gradients = conv.getKernelGradients();
+    std::cout << "\nStored gradients:\n";
+    stored_gradients.print();
+}
+
 int main() {
     try {
         std::cout << "Starting Convolution Tests\n";
         std::cout << "============================\n";
         
-        testConvolutionOperations();
+        testConstructorAndGetters();    // New test
+        testConvolutionOperations();    // Existing test
+        testGradientOperations();       // New test
         
         std::cout << "\nAll convolution tests completed successfully!\n";
         return 0;
