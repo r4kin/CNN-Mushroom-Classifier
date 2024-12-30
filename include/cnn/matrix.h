@@ -19,7 +19,7 @@ public:
     //Operations
     double get(int i, int j) const;
     void set(int i, int j, double value);
-    Matrix multiply(const Matrix& other);
+    Matrix multiply(const Matrix& other) const;
     Matrix transpose();
 
     //Utility

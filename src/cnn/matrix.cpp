@@ -47,7 +47,7 @@ void Matrix::set(int i, int j, double value){
     data[i][j] = value;
 }
 
-Matrix Matrix::multiply(const Matrix& other) {
+Matrix Matrix::multiply(const Matrix& other) const{
     if (cols != other.rows){
         throw std::runtime_error("Matrix Multiplication Error: Dimensions don't match");
     }
